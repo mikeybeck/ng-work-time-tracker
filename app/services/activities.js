@@ -10,7 +10,7 @@
     var activities = [];
     var currentActivity;
 
-    activities.getSumOfDurations = function() {
+    activities.getSumOfDurations = function () {
       return this.reduce(function(mem, act) {
         return mem + act.getDuration();
       }, 0);
@@ -46,12 +46,18 @@
             currentActivity.stop();
           }
           activity.start();
+
+          //var duration = localStorage.getItem(activity.name, duration);
+          //localStorage && localStorage.getItem(activity.name, duration);
+          
+          //console.log(activity._timer.time);    
+
           currentActivity = activity;
           $rootScope.currentActivity = activity;
         }
       },
 
-      getActive: function() {
+      getActive: function () {
         return currentActivity;
       }
     };

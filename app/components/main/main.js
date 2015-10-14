@@ -23,10 +23,14 @@
     var vm = this;
 
     vm.activities = null;
+
+    //vm.activities = localStorage.getItem('activities');
     vm.setActive = activitiesService.setActive;
     vm.isActive = isActive;
     vm.hasActive = hasActive;
     vm.getDurationOfActiveActivity = getDurationOfActiveActivity;
+
+    
 
     activate();
 
@@ -44,8 +48,14 @@
       return !!activitiesService.getActive();
     }
 
-    function getDurationOfActiveActivity () {
-      return activitiesService.getActive().getDuration();
+    function getDurationOfActiveActivity() {
+      
+        var duration = activitiesService.getActive().getDuration();
+
+        localStorage && localStorage.setItem('duration', duration);
+        localStorage && localStorage.setItem(activitiesService.getActive().name, duration); // Update localStorage with duration of current activity
+        
+        return duration
     }
   }
 }());

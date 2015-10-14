@@ -14,6 +14,7 @@
         interval: 1000,
         callback: _applyRootScope
       });
+      initialTime = localStorage.getItem(this.name); // Simple time persistence using localStorage
       this._timer.start_time = initialTime || 0;
       this._timer.pause_time = this._timer.start_time;
     };
