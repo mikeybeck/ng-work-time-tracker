@@ -12,6 +12,11 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
     this.name = name;
     this.color = color;
     this.duration = 0;
+    var lsDuration = parseInt(localStorage.getItem(this.name), 10);
+    if (isNaN(lsDuration)) {
+        localStorage.setItem(this.name, 0);
+    }
+    this.duration = lsDuration; // Simple time persistence using localStorage.  Get time
   };
 
   Activity.prototype.getDurationInPct = function() {
@@ -56,8 +61,9 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
         intervalPromise = null;
       }
 
-      intervalPromise = $interval(function() {
+      intervalPromise = $interval(function () {
         activity.duration += 1;
+        localStorage.setItem(activity.name, parseInt(activity.duration, 10)); // Simple time persistence using localStorage.  Set time
       }, 1000);
     }
   };
