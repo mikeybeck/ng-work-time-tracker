@@ -8,28 +8,38 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
     }, 0);
   };
 
+
   var Activity = function(name, color, duration) {
     this.name = name;
     this.color = color;
     this.duration = 0;
-    var lsDuration = parseInt(localStorage.getItem(this.name), 10);
+    var lsDuration = parseInt(localStorage.getItem(this.name), 10);  // Simple time persistence using localStorage.  Get time
     if (isNaN(lsDuration)) {
         localStorage.setItem(this.name, 0);
     }
-    this.duration = lsDuration; // Simple time persistence using localStorage.  Get time
+    this.duration = lsDuration;
   };
 
   Activity.prototype.getDurationInPct = function() {
     return (this.duration / activities.getSumOfDurations()) * 100;
   };
 
+  /*
   activities.push(new Activity('Working',     'default',  60*350));
   activities.push(new Activity('Eating',      'primary',  60*40 ));
   activities.push(new Activity('Rest',        'info',     60*50 ));
   activities.push(new Activity('Web surfing', 'success',  60*100));
   activities.push(new Activity('Off-topic',   'warning',  60*45 ));
   activities.push(new Activity('Consulting',  'danger',   60*140));
-  activities.push(new Activity('Goofing off',  'success',   60*140));
+  activities.push(new Activity('Goofing off', 'success',  60*140));
+  */
+
+    // Get activities from LS not already named & push as above
+  for (var key in localStorage) {
+      console.log(key);
+      activities.push(new Activity(key, 'danger', 60 * 140));
+  }
+  
 
   return {
     getAll: function() {
@@ -47,8 +57,9 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
       }
     },
 
-    addNew: function(name, color) {
-      activities.push(new Activity(name, color));
+    addNew: function (name, color) {
+        localStorage.setItem(name, 0);
+        activities.push(new Activity(name, color));
     },
 
     setActive: function(activity) {
