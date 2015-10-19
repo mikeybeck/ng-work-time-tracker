@@ -7,7 +7,12 @@ angular.module('workTimeTrackerApp').controller('SettingsCtrl', ['$scope', 'acti
     activities.remove(activity);
   };
 
-  $scope.addNew = function() {
+  $scope.addNew = function () {
+      //localStorage.setItem(name, 0);
+      //var activity = [];
+      //names[0] = prompt("New member name?");
+      //localStorage[name] = JSON.stringify(activity);
+
     activities.addNew('', 'default');
   };
 }]);

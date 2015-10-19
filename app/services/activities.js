@@ -12,10 +12,18 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
   var Activity = function(name, color, duration) {
     this.name = name;
     this.color = color;
-    this.duration = 0;
-    var lsDuration = parseInt(localStorage.getItem(this.name), 10);  // Simple time persistence using localStorage.  Get time
+    this.duration = duration || 0;
+    //var lsDuration = parseInt(localStorage.getItem(this.name), 10);  // Simple time persistence using localStorage.  Get time
+    var lsDuration = parseInt(JSON.parse(localStorage.getItem(this.name)).duration);  // Simple time persistence using localStorage.  Get time
+
+    console.log(this.name + ' duration ' +lsDuration);
+
     if (isNaN(lsDuration)) {
-        localStorage.setItem(this.name, 0);
+        lsDuration = 0;
+        //localStorage.setItem(this.name + "x", "0");
+        localStorage.setItem(this.name, JSON.stringify({ "name": this.name, "duration": "0" }));
+
+        console.log(this.name + ' duration2 ' + lsDuration);
     }
     this.duration = lsDuration;
   };
@@ -37,7 +45,7 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
     // Get activities from LS not already named & push as above
   for (var key in localStorage) {
       console.log(key);
-      activities.push(new Activity(key, 'danger', 60 * 140));
+      activities.push(new Activity(key, 'danger', '20000'));
   }
   
 
@@ -58,8 +66,14 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
     },
 
     addNew: function (name, color) {
-        localStorage.setItem(name, 0);
-        activities.push(new Activity(name, color));
+        var activity = new Activity(name, color);
+        //var key = "activity-" + activities.indexOf(activity);
+        activities.push(activity);
+        //localStorage.setItem(key, activities.indexOf(activity));
+        //var activity = [];
+        //names[0] = prompt("New member name?");
+        //localStorage[key] = JSON.stringify(activity);
+        //alert(activities.indexOf(activity));
     },
 
     setActive: function(activity) {
@@ -74,7 +88,8 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
 
       intervalPromise = $interval(function () {
         activity.duration += 1;
-        localStorage.setItem(activity.name, parseInt(activity.duration, 10)); // Simple time persistence using localStorage.  Set time
+        //localStorage.setItem(activity.name +"x", parseInt(activity.duration, 10)); // Simple time persistence using localStorage.  Set time
+        localStorage.setItem(activity.name, JSON.stringify({ "name": activity.name, "duration": parseInt(activity.duration, 10) }));
       }, 1000);
     }
   };
