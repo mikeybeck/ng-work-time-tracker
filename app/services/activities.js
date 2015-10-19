@@ -36,7 +36,7 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
 
       if (isNaN(lsDuration)) {
           lsDuration = 0;
-          localStorage.setItem(this.name, JSON.stringify({ "name": this.name, "color": this.color, "duration": "0" }));
+          localStorage.setItem(key, JSON.stringify({ "name": key, "color": color, "duration": "0" }));
       }
 
       activities.push(new Activity(key, color, lsDuration));
@@ -81,3 +81,17 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
     }
   };
 }]);
+
+
+
+/* These are notes - Thinking out loud
+//var datex = {x, y};
+
+var userObject = { userId: 24, name: 'Jack Bauer', date: { x : 'y' } };
+
+localStorage.setItem('user', userObject);
+
+//userObject = localStorage.getItem('user');
+
+console.log(userObject);
+*/
