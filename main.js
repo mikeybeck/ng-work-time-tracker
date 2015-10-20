@@ -3,7 +3,8 @@ angular.module('workTimeTrackerApp').controller('MainCtrl', ['$scope', '$rootSco
     
   if ($rootScope.startedAt) {
     flipClock.onInit(function() {
-      flipClock.restart(Math.round((new Date() - $rootScope.startedAt)/1000));
+        flipClock.restart(Math.round((new Date() - $rootScope.startedAt) / 1000));
+        //console.log($rootScope.startedAt);
     });
   }
 

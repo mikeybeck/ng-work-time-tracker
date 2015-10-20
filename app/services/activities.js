@@ -9,10 +9,11 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
   };
 
 
-  var Activity = function(name, color, duration) {
+  var Activity = function(name, color, duration, times) {
     this.name = name;
     this.color = color;
     this.duration = duration || 0;
+    this.times = times;
   };
 
   Activity.prototype.getDurationInPct = function() {
@@ -33,13 +34,23 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
   for (var key in localStorage) {
       var color = JSON.parse(localStorage.getItem(key)).color;
       var lsDuration = parseInt(JSON.parse(localStorage.getItem(key)).duration);  // Simple time persistence using localStorage.  Get time
-
+      var times = JSON.parse(localStorage.getItem(key)).times;
+      //times = { "date": "x" };
+      if (!times) {
+          times = [{ "S": new Date(), "E": new Date() }];
+      }
       if (isNaN(lsDuration)) {
           lsDuration = 0;
-          localStorage.setItem(key, JSON.stringify({ "name": key, "color": color, "duration": "0" }));
+          localStorage.setItem(key, JSON.stringify({ "name": key, "color": color, "duration": "0", "times": [{ "S": new Date(), "E": new Date() }] }));
       }
 
-      activities.push(new Activity(key, color, lsDuration));
+      //console.log(times[times.length - 1].E);
+      //console.log(times);
+      //if (typeof(times[times.length - 1]) != 'undefined') { //End time should be entered, need to make new entry in times array
+          //console.log(times[times.length - 1].E);
+          //times.push({ "S": new Date(), "E": new Date() });
+      //}
+      activities.push(new Activity(key, color, lsDuration, times));
   }
   
 
@@ -65,8 +76,18 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
     },
 
     setActive: function(activity) {
-      $rootScope.currentActivity = activity;
+        $rootScope.currentActivity = activity;
 
+        //activity.times[activity.times.length - 1].E = new Date();
+        var times = activity.times;
+        if (typeof (times) === 'undefined') { //New entry
+            times = [];
+            times.push({ "S": new Date(), "E": new Date() });
+        } else if (typeof (times[times.length - 1]) != 'undefined') { //End time should be entered, need to make new entry in times array
+            //console.log(times[times.length - 1].E);
+            times.push({ "S": new Date(), "E": new Date() });
+        }
+        activity.times = times;
       flipClock.restart(0);
 
       if (intervalPromise) {
@@ -76,7 +97,16 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
 
       intervalPromise = $interval(function () {
         activity.duration += 1;
-        localStorage.setItem(activity.name, JSON.stringify({ "name": activity.name, "color": activity.color, "duration": parseInt(activity.duration, 10) }));
+        // Update end time, start time stays the same
+        // -Get last item in activity.times array and update end time
+        activity.times[activity.times.length - 1].E = new Date(); //Update end time
+        
+        localStorage.setItem(activity.name, JSON.stringify({
+            "name": activity.name,
+            "color": activity.color,
+            "duration": parseInt(activity.duration, 10),
+            "times": activity.times
+        }));
       }, 1000);
     }
   };
