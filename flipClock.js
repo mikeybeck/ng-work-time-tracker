@@ -1,31 +1,10 @@
-angular.module('workTimeTrackerApp').factory('flipClock', function FlipClockFactory() {
-  var flipClock = null,
-      onInit = null;
-
+angular.module('workTimeTrackerApp').directive('flipClock', ['flipClock', function flipClockDirective(flipClock) {
   return {
-    setElement: function(element) {
-      flipClock = element.FlipClock({
-        autoStart: false
+    link: function(scope, element, attrs) {
+      flipClock.setElement(element);
+      element.bind('$destroy', function() {
+        flipClock.unsetElement();
       });
-      if (onInit) {
-        onInit();
-        onInit = null;
-      }
-    },
-    unsetElement: function() {
-      flipClock.stop();
-      flipClock = null;
-      onInit = null;
-    },
-    restart: function(startTime) {
-      if (flipClock) {
-        flipClock.stop();
-        flipClock.start();
-        flipClock.setTime(startTime || 1);
-      }
-    },
-    onInit: function(callback) {
-      onInit = callback;
     }
   };
-});
+}]);

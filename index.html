@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="workTimeTrackerApp">
   <head>
     <meta charset="utf-8">
@@ -21,9 +21,10 @@
     </header>
     <div ng-view class="bounce-animation"></div>
     <ul class="menu-icons-panel" ng-controller="NavCtrl">
-      <li><a tooltip="Track you time" ng-class="navClass('')" href="#/"><i class="fa fa-clock-o"></i></a></li>
+      <li><a tooltip="Track your time" ng-class="navClass('')" href="#/"><i class="fa fa-clock-o"></i></a></li>
       <li><a tooltip="Statistics" ng-class="navClass('statistics')" href="#/statistics"><i class="fa fa-bar-chart-o"></i></a></li>
       <li><a tooltip="Settings" ng-class="navClass('settings')" href="#/settings"><i class="fa fa-gear"></i></a></li>
+      <li><a tooltip="Data" ng-class="navClass('data')" href="#/data"><i class="fa fa-bar-chart-o"></i></a></li>
     </ul>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/FlipClock/compiled/flipclock.js"></script>
@@ -39,10 +40,13 @@
     <script src="app/controllers/main.js"></script>
     <script src="app/controllers/statistics.js"></script>
     <script src="app/controllers/settings.js"></script>
+    <script src="app/controllers/data.js"></script>
 
     <script src="app/directives/flipClock.js"></script>
+    <script src="app/directives/datesDataD.js"></script>
 
     <script src="app/filters/timeDuration.js"></script>
+    <script src="app/filters/datesData.js"></script>
 
     <script src="app/services/activities.js"></script>
     <script src="app/services/flipClock.js"></script>

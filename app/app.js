@@ -12,6 +12,10 @@ angular.module('workTimeTrackerApp', ['ui.bootstrap', 'ngRoute', 'ngAnimate']).c
       templateUrl: 'app/views/statistics.html',
       controller: 'StatisticsCtrl'
     })
+      .when('/data', {
+          templateUrl: 'app/views/data.html',
+          controller: 'DataCtrl'
+      })
     .otherwise({
       redirectTo: '/'
     });
