@@ -58,10 +58,34 @@
                   endMin = "0" + endMin;
               }
 
-              output = output + '<br>'+ startDay + '/' + startMonth + '/' + startYear + ' ' + startHour + ':' + startMin + startAMPM + ' - ' + endHour + ':' + endMin + endAMPM;
-          }//13/10/2015 02:35PM - 03:15PM (0:40) 
+              var durationMS = (endTime - startTime);
+              var digitalDuration = convertMSToDigital(durationMS);
+
+              //output e.g: 13/10/2015 02:35PM - 03:15PM (0:40) 
+              output = output + '<br>'+ startDay + '/' + startMonth + '/' + startYear + ' ' + startHour + ':' + startMin + startAMPM + ' - ' + endHour + ':' + endMin + endAMPM + ' (' + digitalDuration.clock + ')';
+          }   
           return $sce.trustAsHtml(output);
       };
+
+      // CONVERT MILLISECONDS TO DIGITAL CLOCK FORMAT
+      function convertMSToDigital(ms) {
+          hours = Math.floor(ms / 3600000), // 1 Hour = 36000 Milliseconds
+          minutes = Math.floor((ms % 3600000) / 60000), // 1 Minutes = 60000 Milliseconds
+          seconds = Math.floor(((ms % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+          if (hours < 10) {
+              hours = "0" + hours;
+          }
+          if (minutes < 10) {
+              minutes = "0" + minutes;
+          }
+          return {
+              hours: hours,
+              minutes: minutes,
+              seconds: seconds,
+              clock: hours + ":" + minutes
+          };
+      }
+
   });
 
 angular.module('workTimeTrackerApp')
