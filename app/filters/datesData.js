@@ -11,17 +11,29 @@
           // Loop through input array, display start & end times of each period (concatenated and returned as a string)
           var output = '';
           for (var i = 0; i < input.length; i++) {
-              console.log(input[i].S);
+              //console.log(input[i].S);
               var startTime = new Date(input[i].S);
               var startDay = startTime.getDate();
               var startMonth = startTime.getMonth();
               var startYear = startTime.getFullYear();
               var startHour = startTime.getHours();
               var startMin = startTime.getMinutes();
+
+              if (startMonth < 10) {
+                  startMonth = "0" + startMonth;
+              }
+
+              var startAMPM = "AM";
+              if (startHour > 12) {
+                  startHour = startHour - 12;
+                  startAMPM = "PM";
+              }
+              if (startHour < 10) {
+                  startHour = "0" + startHour;
+              }
               if (startMin < 10) {
                   startMin = "0" + startMin;
               }
-              var startAMPM = startHour < 12 ? "AM" : "PM";
 
               var endTime = new Date(input[i].E);
               var endDay = endTime.getDate();
@@ -29,10 +41,22 @@
               var endYear = endTime.getFullYear();
               var endHour = endTime.getHours();
               var endMin = endTime.getMinutes();
+
+              if (endMonth < 10) {
+                  endMonth = "0" + endMonth;
+              }
+
+              var endAMPM = "AM";
+              if (endHour > 12) {
+                  endHour = endHour - 12;
+                  endAMPM = "PM";
+              }
+              if (endHour < 10) {
+                  endHour = "0" + endHour;
+              }
               if (endMin < 10) {
                   endMin = "0" + endMin;
               }
-              var endAMPM = endHour < 12 ? "AM" : "PM";
 
               output = output + '<br>'+ startDay + '/' + startMonth + '/' + startYear + ' ' + startHour + ':' + startMin + startAMPM + ' - ' + endHour + ':' + endMin + endAMPM;
           }//13/10/2015 02:35PM - 03:15PM (0:40) 
@@ -43,7 +67,6 @@
 angular.module('workTimeTrackerApp')
     .filter('trust', ['$sce', function ($sce) {
         return function (value, type) {
-            console.log('sddsdsffds');
         return $sce.trustAs(type || 'html', value);
     }
 }]);
