@@ -1,4 +1,4 @@
-angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootScope', '$interval', function(flipClock, $rootScope, $interval) {
+angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootScope', '$interval', 'Calculate', function(flipClock, $rootScope, $interval, Calculate) {
   var activities = [],
       intervalPromise;
 
@@ -44,12 +44,12 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
           localStorage.setItem(key, JSON.stringify({ "name": key, "color": color, "duration": "0", "times": [{ "S": new Date(), "E": new Date() }] }));
       }
 
-      //console.log(times[times.length - 1].E);
-      //console.log(times);
-      //if (typeof(times[times.length - 1]) != 'undefined') { //End time should be entered, need to make new entry in times array
-          //console.log(times[times.length - 1].E);
-          //times.push({ "S": new Date(), "E": new Date() });
-      //}
+      //Calculate total duration of activity from end times - start times
+      //(This is more accurate than the current method of calculating duration, which is pretty terrible)
+      var totalDurationMS = Calculate.duration(times);
+
+      lsDuration = Math.round(totalDurationMS/1000);
+
       activities.push(new Activity(key, color, lsDuration, times));
   }
   
@@ -68,6 +68,8 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
       if (index > -1) {
           activities.splice(index, 1);
       }
+      console.log(activity);
+      localStorage.removeItem(activity.name);
     },
 
     addNew: function (name, color) {
@@ -88,6 +90,7 @@ angular.module('workTimeTrackerApp').factory('activities', ['flipClock', '$rootS
             times.push({ "S": new Date(), "E": new Date() });
         }
         activity.times = times;
+
       flipClock.restart(0);
 
       if (intervalPromise) {

@@ -9,18 +9,12 @@
     </h4>
     <hr>
     <ul class="list-unstyled">
-      <li ng-repeat="activity in activities | orderBy:'duration':true" class="statistics-animation">
-          <h5>{{activity.name}}</h5>
+      <li ng-repeat="activity in activities | orderBy:'duration':true" class="data-raw bg-{{activity.color}}">
+          <h2>{{activity.name}}</h2>
           <!-- Print out all date data -->
 
           <div ng-bind-html="activity.times | datesData"></div>
 
-
-          <div class="progress">
-            <div class="progress-bar progress-bar-{{activity.color}}" style="width: {{activity.getDurationInPct()}}%">
-              {{activity.duration | timeDuration}}
-            </div>
-          </div>
       </li>
     </ul>
   </div>
