@@ -1,7 +1,7 @@
 Angular Time Tracker & recorder
 ====================
 
-### [Demo](http://imgs.mikeybeck.com/timetracker/index.html#/)
+### [Demo](http://mikeybeck.com/time-tracker/)
 
 Simple time tracker that makes it easy to record time without hurting the user.  Uses localstorage for data persistence so no database is required.
 
@@ -20,5 +20,6 @@ TODO:
  - Add total time for each activity to data page
  - Add sub-activities
  - Add better data visualisation (calendar format perhaps)
+ - Make properly responsive / mobile friendly
 
 NOTE: I'm really just using this project as a way to help me learn Angular, so expect it to be poorly coded as I have pretty much no idea what I'm doing.
